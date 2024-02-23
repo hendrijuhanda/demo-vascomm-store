@@ -1,0 +1,20 @@
+name: demo-vascomm-store
+services:
+  php:
+    type: php:8.0
+    via: apache
+    webroot: be-admin/public
+  database:
+    type: mysql
+  pma:
+    type: phpmyadmin
+tooling:
+  php:
+    service: php
+  composer:
+    service: php
+proxy:
+  php:
+    - demo-vascomm-store.be-admin.lndo.site
+  pma:
+    - demo-vascomm-store.pma.lndo.site
