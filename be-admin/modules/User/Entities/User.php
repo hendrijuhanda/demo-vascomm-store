@@ -10,12 +10,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 use Modules\User\Entities\Contracts\UserInterface;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, UserInterface
 {
-    use Authenticatable, Authorizable, HasFactory, SoftDeletes;
+    use Authenticatable, Authorizable, HasFactory, SoftDeletes, HasRoles;
 
     protected $table = self::TABLE;
+
+    protected $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.

@@ -24,7 +24,9 @@ class UserRepository implements UserRepositoryInterface
     public function getAllPaginated(): LengthAwarePaginator
     {
         return User
-            ::when(request()->get('full_name'), function ($q) {
+            ::with('roles:name')
+
+            ->when(request()->get('full_name'), function ($q) {
                 return $q->where('full_name', 'like', '%' . request()->get('full_name') . '%');
             })
 

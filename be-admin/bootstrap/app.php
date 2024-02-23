@@ -66,6 +66,8 @@ $app->bind('path.public', function () {
 $app->configure('app');
 $app->configure('tinker');
 $app->configure('modules');
+$app->configure('permission');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -82,9 +84,11 @@ $app->configure('modules');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'permission' => App\Http\Middleware\PermissionMiddleware::class,
+    'role' => App\Http\Middleware\RoleMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -98,10 +102,12 @@ $app->configure('modules');
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(\Laravel\Tinker\TinkerServiceProvider::class);
 $app->register(\Nwidart\Modules\LumenModulesServiceProvider::class);
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);
+$app->register(Spatie\Permission\PermissionServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
