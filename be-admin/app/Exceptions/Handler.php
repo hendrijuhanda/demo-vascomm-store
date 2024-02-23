@@ -63,6 +63,10 @@ class Handler extends ExceptionHandler
                 $status = $e->getStatusCode();
             }
 
+            if ($e instanceof ModelNotFoundException) {
+                $status = Response::HTTP_NOT_FOUND;
+            }
+
             // if ($e instanceof ServiceException) {
             //     $status = $e->getStatusCode();
             //     $data = $e->getData();
