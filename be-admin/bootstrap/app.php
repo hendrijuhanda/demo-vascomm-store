@@ -23,7 +23,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -115,12 +115,14 @@ $app->register(\Nwidart\Modules\LumenModulesServiceProvider::class);
 */
 
 
-$app->router->group([
-    'namespace' => 'App\Http\Controllers',
-], function ($router) {
+$app->router->group([], function ($router) {
     require __DIR__ . '/../routes/web.php';
+
+    $router->group(["prefix" => 'api'], function ($router) {
+        $routes = glob(require __DIR__ . '/../routes/api.php');
+
+        foreach ($routes as $route) require $route;
+    });
 });
-
-
 
 return $app;

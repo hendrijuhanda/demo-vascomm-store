@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'namespace' => 'modules',
+    'namespace' => 'Modules',
 
     /*
     |--------------------------------------------------------------------------
@@ -103,8 +103,8 @@ return [
         'generator' => [
             'config' => ['path' => 'Config', 'generate' => true],
             'command' => ['path' => 'Console', 'generate' => false],
-            'migration' => ['path' => 'Database/Migrations', 'generate' => true],
-            'seeder' => ['path' => 'Database/Seeders', 'generate' => true],
+            'migration' => ['path' => 'Database/Migrations', 'generate' => false],
+            'seeder' => ['path' => 'Database/Seeders', 'generate' => false],
             'factory' => ['path' => 'Database/factories', 'generate' => false],
             'model' => ['path' => 'Entities', 'generate' => true],
             'routes' => ['path' => 'Routes', 'generate' => true],
