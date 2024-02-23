@@ -1,19 +1,15 @@
 <?php
 
-namespace Modules\User\Entities;
+namespace Modules\Product\Entities;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Lumen\Auth\Authorizable;
-use Modules\User\Entities\Contracts\UserInterface;
+use Modules\Product\Entities\Contracts\ProductInterface;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, UserInterface
+class Product extends Model implements ProductInterface
 {
-    use Authenticatable, Authorizable, HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = self::TABLE;
 
@@ -23,7 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'full_name', 'email', 'phone_number', 'is_active',
+        'name', 'price', 'image', 'is_active',
     ];
 
     /**
@@ -32,8 +28,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $hidden = [
-        'password', 'deleted_at'
+        'image', 'deleted_at'
     ];
+
+    protected $appends = ['image_url'];
 
     /**
      * @inheritdoc
@@ -46,25 +44,25 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * @inheritdoc
      */
-    public function getEmail(): string
+    public function getName(): string
     {
-        return $this->email;
+        return $this->name;
     }
 
     /**
      * @inheritdoc
      */
-    public function getFullName(): string
+    public function getPrice(): float
     {
-        return $this->full_name;
+        return $this->price;
     }
 
     /**
      * @inheritdoc
      */
-    public function getPhoneNumber(): string
+    public function getImage(): string
     {
-        return $this->phone_number;
+        return $this->image;
     }
 
     /**
@@ -73,5 +71,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getIsActive(): bool
     {
         return $this->is_active;
+    }
+
+    public function getImageUrlAttribute(): string
+    {
+        return request()->getSchemeAndHttpHost() . '/' . $this->image;
     }
 }

@@ -3,16 +3,16 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\User\Entities\User;
+use Modules\Product\Entities\Product;
 
-class UserFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Product::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'full_name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'phone_number' => $this->faker->phoneNumber(),
+            'name' => $this->faker->text(25),
+            'price' => $this->faker->randomFloat(2, 10000, 5000000),
+            'image' => $this->faker->url(),
             'is_active' => $this->faker->boolean()
         ];
     }

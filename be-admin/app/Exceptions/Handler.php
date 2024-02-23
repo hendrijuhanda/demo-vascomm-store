@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-        if ($request->wantsJson()) {
+        if ($request->segment(1) === 'api') {
             $data = null;
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
 
