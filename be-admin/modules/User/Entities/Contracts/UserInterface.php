@@ -43,6 +43,13 @@ interface UserInterface
     public function createToken($name, array $scopes = []);
 
     /**
+     * Get the current access token being used by the user.
+     *
+     * @return \Laravel\Passport\Token|null
+     */
+    public function token();
+
+    /**
      * Assign the given role to the model.
      *
      * @param  string|int|array|Role|Collection|\BackedEnum  ...$roles

@@ -51,10 +51,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-        if ($request->segment(1) === 'api') {
+        if ($request->segment(1) === 'api' || $request->expectsJson()) {
             $data = null;
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
-
 
             if ($e instanceof ValidationException) {
                 $data = $e->errors();

@@ -8,6 +8,8 @@ services:
     type: mysql
   pma:
     type: phpmyadmin
+  mailhog:
+    type: mailhog
 tooling:
   php:
     service: php
@@ -18,3 +20,5 @@ proxy:
     - demo-vascomm-store.be-admin.lndo.site
   pma:
     - demo-vascomm-store.pma.lndo.site
+  mailhog:
+    - demo-vascomm-store.mailhog.lndo.site

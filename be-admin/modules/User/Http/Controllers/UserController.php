@@ -24,7 +24,7 @@ class UserController extends Controller
     /**
      *
      */
-    private function checkIsRoleExist($attribute, $value, $fail)
+    protected function checkIsRoleExist($attribute, $value, $fail)
     {
         try {
             !Role::findByName($value);

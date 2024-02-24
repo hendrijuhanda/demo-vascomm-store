@@ -3,7 +3,9 @@
 namespace Modules\User\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Modules\User\Entities\Contracts\UserInterface;
 use Modules\User\Repositories\Contracts\UserRepositoryInterface;
 use Modules\User\Services\Contracts\UserServiceInterface;
@@ -67,5 +69,28 @@ class UserService implements UserServiceInterface
         $user = $this->userRepository->model()->where($searchBy, $emailOrPhone)->first();
 
         return $user && Hash::check($password, $user->password) ? $user : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function register(array $input)
+    {
+        DB::transaction(function () use ($input) {
+            $password = Str::random(16);
+
+            $user = $this->create(array_merge(
+                $input,
+                [
+                    "password" => Hash::make($password),
+                    "is_active" => 1,
+                ]
+            ));
+
+            $user->assignRole('user');
+
+            // Send mail here
+            info($password);
+        });
     }
 }

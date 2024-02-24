@@ -1,10 +1,9 @@
 <?php
 
-$router->group(['namespace' => 'Modules\User\Http\Controllers', 'prefix' => 'v1'], function ($group) {
-    $group->post('/register', 'UserController@create');
-
-    $group->get('/users', 'UserController@index');
-    $group->get('/user/{id}', 'UserController@show');
-    $group->put('/user/{id}', 'UserController@update');
-    $group->delete('/user/{id}', 'UserController@destroy');
+$router->group(['namespace' => 'Modules\User\Http\Controllers', "middleware" => 'auth:api', 'prefix' => 'v1'], function ($router) {
+    $router->get('/users', 'UserController@index');
+    $router->get('/user/{id}', 'UserController@show');
+    $router->post('/user', 'UserController@create');
+    $router->put('/user/{id}', 'UserController@update');
+    $router->delete('/user/{id}', 'UserController@destroy');
 });

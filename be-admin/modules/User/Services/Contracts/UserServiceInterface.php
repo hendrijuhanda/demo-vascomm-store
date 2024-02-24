@@ -36,4 +36,9 @@ interface UserServiceInterface
      *
      */
     public function authenticate(string $emailOrPhone, string $password): UserInterface|null;
+
+    /**
+     *
+     */
+    public function register(array $input);
 }
