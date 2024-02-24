@@ -62,7 +62,7 @@ class AuthController extends UserController
         Validator::make($request->all(), [
             'full_name' => 'required|string',
             'email' => 'required|email|unique:' . UserInterface::TABLE . ',email',
-            'phone_number' => 'required|string',
+            'phone_number' => 'required|string|unique:' . UserInterface::TABLE . ',phone_number',
         ])->validate();
 
         $this->userService->register($request->all());

@@ -2,9 +2,11 @@
 
 namespace Modules\User\Services;
 
+use App\Mails\RegisterEmail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Modules\User\Entities\Contracts\UserInterface;
 use Modules\User\Repositories\Contracts\UserRepositoryInterface;
@@ -90,7 +92,7 @@ class UserService implements UserServiceInterface
             $user->assignRole('user');
 
             // Send mail here
-            info($password);
+            Mail::to($user->getEmail())->send(new RegisterEmail(['password' => $password]));
         });
     }
 }
