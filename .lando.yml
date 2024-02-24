@@ -3,13 +3,21 @@ services:
   php:
     type: php:8.0
     via: apache
-    webroot: be-admin/public
+    webroot: lumen-php/public
   database:
     type: mysql
   pma:
     type: phpmyadmin
   mailhog:
     type: mailhog
+  swagger:
+    type: lando
+    app_mount: false
+    services:
+      image: swaggerapi/swagger-ui
+      ports:
+        - '80'
+      command: docker run -p 80:8080 swaggerapi/swagger-ui
 tooling:
   php:
     service: php
