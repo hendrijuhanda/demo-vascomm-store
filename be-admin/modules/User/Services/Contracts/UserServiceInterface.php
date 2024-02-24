@@ -31,4 +31,9 @@ interface UserServiceInterface
      *
      */
     public function delete(int $id): bool;
+
+    /**
+     *
+     */
+    public function authenticate(string $emailOrPhone, string $password): UserInterface|null;
 }

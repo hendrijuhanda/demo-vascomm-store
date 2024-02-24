@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -54,6 +55,7 @@ class Handler extends ExceptionHandler
             $data = null;
             $status = Response::HTTP_INTERNAL_SERVER_ERROR;
 
+
             if ($e instanceof ValidationException) {
                 $data = $e->errors();
                 $status = $e->status;
@@ -67,14 +69,9 @@ class Handler extends ExceptionHandler
                 $status = Response::HTTP_NOT_FOUND;
             }
 
-            // if ($e instanceof ServiceException) {
-            //     $status = $e->getStatusCode();
-            //     $data = $e->getData();
-            // }
-
-            // if ($e instanceof AuthenticationException) {
-            //     $status = Response::HTTP_UNAUTHORIZED;
-            // }
+            if ($e instanceof UnauthorizedException) {
+                $status = Response::HTTP_UNAUTHORIZED;
+            }
 
             $format = [
                 'code' => $status,

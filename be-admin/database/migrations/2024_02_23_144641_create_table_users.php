@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('full_name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('password');
-            $table->string('phone_number');
+            $table->string('phone_number')->unique();
             $table->boolean('is_active');
 
             $table->softDeletes();

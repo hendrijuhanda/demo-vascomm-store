@@ -3,6 +3,7 @@
 namespace Modules\User\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Hash;
 use Modules\User\Entities\Contracts\UserInterface;
 use Modules\User\Repositories\Contracts\UserRepositoryInterface;
 use Modules\User\Services\Contracts\UserServiceInterface;
@@ -54,5 +55,17 @@ class UserService implements UserServiceInterface
     public function delete(int $id): bool
     {
         return $this->userRepository->destroy($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function authenticate(string $emailOrPhone, string $password): UserInterface|null
+    {
+        $searchBy = filter_var($emailOrPhone, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
+
+        $user = $this->userRepository->model()->where($searchBy, $emailOrPhone)->first();
+
+        return $user && Hash::check($password, $user->password) ? $user : null;
     }
 }
