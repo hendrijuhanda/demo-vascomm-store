@@ -78,15 +78,14 @@ class AuthController extends UserController
     {
         $isRevoked = false;
 
-        try {
-            $user = $request->user();
+        $user = $request->user();
 
+        if ($user) {
             $token = $user->token();
 
             $token->revoke();
 
             $isRevoked = true;
-        } catch (\Exception $e) {
         }
 
         return $this->jsonResponse(
