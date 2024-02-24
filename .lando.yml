@@ -1,5 +1,12 @@
 name: demo-vascomm-store
 services:
+  node:
+    type: node:18
+    run:
+      - npm i -g pm2
+    ports:
+      - "3000:3000"
+      - "5317:5317"
   php:
     type: php:8.0
     via: apache
@@ -11,22 +18,27 @@ services:
   mailhog:
     type: mailhog
   swagger:
-    type: lando
-    app_mount: false
-    services:
-      image: swaggerapi/swagger-ui
-      ports:
-        - '80'
-      command: docker run -p 80:8080 swaggerapi/swagger-ui
+    type: nginx
+    webroot: swagger
 tooling:
   php:
     service: php
   composer:
     service: php
+  npm:
+    service: node
+  npx:
+    service: node
+  pm2:
+    service: node
 proxy:
+  node:
+    - demo-vascomm-store.lndo.site:3000
   php:
-    - demo-vascomm-store.be-admin.lndo.site
+    - api.demo-vascomm-store.lndo.site
   pma:
-    - demo-vascomm-store.pma.lndo.site
+    - pma.demo-vascomm-store.lndo.site
   mailhog:
-    - demo-vascomm-store.mailhog.lndo.site
+    - mailhog.demo-vascomm-store.lndo.site
+  swagger:
+    - swagger.demo-vascomm-store.lndo.site
