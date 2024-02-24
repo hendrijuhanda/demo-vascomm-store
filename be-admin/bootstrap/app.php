@@ -66,6 +66,7 @@ $app->bind('path.public', function () {
 $app->configure('app');
 $app->configure('tinker');
 $app->configure('modules');
+$app->configure('auth');
 $app->configure('permission');
 
 
@@ -108,6 +109,8 @@ $app->register(\Laravel\Tinker\TinkerServiceProvider::class);
 $app->register(\Nwidart\Modules\LumenModulesServiceProvider::class);
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);
 $app->register(Spatie\Permission\PermissionServiceProvider::class);
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

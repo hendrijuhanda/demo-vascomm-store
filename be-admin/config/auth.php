@@ -1,5 +1,7 @@
 <?php
 
+use Modules\User\Entities\User;
+
 return [
 
     /*
@@ -35,7 +37,10 @@ return [
     */
 
     'guards' => [
-        'api' => ['driver' => 'api'],
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -56,7 +61,10 @@ return [
     */
 
     'providers' => [
-        //
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => User::class
+        ]
     ],
 
     /*

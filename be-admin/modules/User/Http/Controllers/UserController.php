@@ -8,7 +8,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Modules\User\Entities\User;
 use Modules\User\Services\Contracts\UserServiceInterface;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -17,6 +19,18 @@ class UserController extends Controller
     public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
+    }
+
+    /**
+     *
+     */
+    private function checkIsRoleExist($attribute, $value, $fail)
+    {
+        try {
+            !Role::findByName($value);
+        } catch (\Exception $e) {
+            $fail("The $attribute $value is not exist.");
+        }
     }
 
     /**
@@ -37,12 +51,23 @@ class UserController extends Controller
     {
         Validator::make($request->all(), [
             'full_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:' . User::TABLE . ',email',
+            'password' => 'required|min:6',
             'phone_number' => 'required|string',
-            'is_active' => 'required|boolean'
+            'is_active' => 'required|boolean',
+            'role' => ['string', fn (...$args) => $this->checkIsRoleExist(...$args)]
         ])->validate();
 
-        return $this->jsonResponse($this->userService->create($request->all()), Response::HTTP_OK);
+        $encryptedPassword = app('hash')->make($request->input('password'));
+
+        $user = $this->userService->create(array_merge(
+            $request->all(),
+            ['password' => $encryptedPassword]
+        ));
+
+        $token = $user->createToken('api-token')->accessToken;
+
+        return $this->jsonResponse(['token' => $token], Response::HTTP_OK);
     }
 
     /**
@@ -67,9 +92,10 @@ class UserController extends Controller
     {
         Validator::make($request->all(), [
             'full_name' => 'string',
-            'email' => 'email',
+            'email' => 'email|unique:' . User::TABLE . ',email,' . $id,
             'phone_number' => 'string',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
+            'role' => ['string', fn (...$args) => $this->checkIsRoleExist(...$args)]
         ])->validate();
 
         return $this->jsonResponse($this->userService->update($request->all(), $id), Response::HTTP_OK);

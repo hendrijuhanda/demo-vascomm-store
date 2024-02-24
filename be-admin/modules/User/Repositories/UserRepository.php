@@ -4,6 +4,7 @@ namespace Modules\User\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Modules\User\Entities\Contracts\UserInterface;
 use Modules\User\Entities\User;
 use Modules\User\Repositories\Contracts\UserRepositoryInterface;
@@ -58,7 +59,16 @@ class UserRepository implements UserRepositoryInterface
      */
     public function store(array $input): UserInterface
     {
-        return User::create($input);
+        // dd($input);
+        return DB::transaction(function () use ($input) {
+            $user = User::create($input);
+
+            if (isset($input['role'])) {
+                $user->assignRole($input['role']);
+            }
+
+            return $user;
+        });
     }
 
     /**

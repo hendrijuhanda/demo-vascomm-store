@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
+use Laravel\Passport\HasApiTokens;
 use Modules\User\Entities\Contracts\UserInterface;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, UserInterface
 {
-    use Authenticatable, Authorizable, HasFactory, SoftDeletes, HasRoles;
+    use Authenticatable, Authorizable, HasFactory, SoftDeletes, HasRoles, HasApiTokens;
 
     protected $table = self::TABLE;
 
@@ -26,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var string[]
      */
     protected $fillable = [
-        'full_name', 'email', 'phone_number', 'is_active',
+        'full_name', 'email', 'password', 'phone_number', 'is_active',
     ];
 
     /**
