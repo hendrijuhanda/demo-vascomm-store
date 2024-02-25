@@ -53,7 +53,7 @@ const LoginForm = ({ handleSwitch, setError }: any) => {
       .catch((e) => {
         setError(e.message);
       });
-  }, [emailOrPhone, password]);
+  }, [emailOrPhone, password, logUserIn, setError]);
 
   return (
     <div className="w-full">
@@ -127,7 +127,7 @@ const RegisterForm = ({ handleSwitch, setError, setSuccess }: any) => {
       .catch((e) => {
         setError(e.message);
       });
-  }, [name, phone, email]);
+  }, [name, phone, email, setError, setSuccess]);
 
   return (
     <div className="w-full">
@@ -197,7 +197,7 @@ export default function Login() {
     if (user) {
       router.push("/");
     }
-  }, [user]);
+  }, [user, router]);
 
   useEffect(() => {
     setIsLoginForm(!isRegisterParam);
@@ -214,7 +214,7 @@ export default function Login() {
         <h1 className="text-3xl mb- font-bold">Nama Aplikasi</h1>
         <div className="w-1/2 text-lg">
           Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
         </div>

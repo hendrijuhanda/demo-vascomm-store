@@ -41,7 +41,7 @@ export default function RootLayout({
     } else {
       setIsready(true);
     }
-  }, []);
+  }, [logUserIn]);
 
   return (
     <html lang="id">
