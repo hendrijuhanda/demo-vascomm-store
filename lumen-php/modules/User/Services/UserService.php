@@ -50,7 +50,15 @@ class UserService implements UserServiceInterface
      */
     public function update(array $input, int $id): UserInterface
     {
-        return $this->userRepository->update($input, $id);
+        return DB::transaction(function () use ($input, $id) {
+            $user = $this->userRepository->update($input, $id);
+
+            if (isset($input['role'])) {
+                $user->assignRole($input['role']);
+            }
+
+            return $this->show($user->id);
+        });
     }
 
     /**
@@ -76,23 +84,25 @@ class UserService implements UserServiceInterface
     /**
      * @inheritdoc
      */
-    public function register(array $input)
+    public function register(array $input): UserInterface
     {
-        DB::transaction(function () use ($input) {
+        return DB::transaction(function () use ($input) {
             $password = Str::random(16);
 
             $user = $this->create(array_merge(
                 $input,
                 [
                     "password" => Hash::make($password),
-                    "is_active" => 1,
+                    "is_active" => isset($input['is_active']) ? $input['is_active'] : 1,
                 ]
             ));
 
-            $user->assignRole('user');
+            $user->assignRole(isset($input['role']) ? $input['role'] : 'user');
 
             // Send mail here
             Mail::to($user->getEmail())->send(new RegisterEmail(['password' => $password]));
+
+            return $user;
         });
     }
 }

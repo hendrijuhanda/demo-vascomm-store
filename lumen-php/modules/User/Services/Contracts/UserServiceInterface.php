@@ -40,5 +40,5 @@ interface UserServiceInterface
     /**
      *
      */
-    public function register(array $input);
+    public function register(array $input): UserInterface;
 }

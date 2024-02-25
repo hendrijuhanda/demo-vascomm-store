@@ -68,7 +68,6 @@ class UserRepository implements UserRepositoryInterface
      */
     public function store(array $input): UserInterface
     {
-        // dd($input);
         return DB::transaction(function () use ($input) {
             $user = User::create($input);
 

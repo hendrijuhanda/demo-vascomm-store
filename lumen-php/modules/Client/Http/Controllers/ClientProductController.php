@@ -4,8 +4,8 @@ namespace Modules\Client\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Modules\Client\Http\Resources\ClientProductResource;
 use Modules\Client\Services\Contracts\ClientProductServiceInterface;
+use Modules\Product\Http\Resources\ProductResource;
 
 class ClientProductController extends ClientController
 {
@@ -22,7 +22,7 @@ class ClientProductController extends ClientController
     public function index(): JsonResponse
     {
         return $this->jsonResponse(
-            [$this->clientProductService->index(), ClientProductResource::class],
+            [$this->clientProductService->index(), ProductResource::class],
             Response::HTTP_OK
         );
     }

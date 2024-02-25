@@ -15,7 +15,6 @@
         "laravel/lumen-framework": "^9.0",
         "laravel/passport": "^10.4",
         "laravel/tinker": "^2.9",
-        "nordsoftware/lumen-cors": "^3.5",
         "nwidart/laravel-modules": "^9.0",
         "spatie/laravel-permission": "^6.3"
     },

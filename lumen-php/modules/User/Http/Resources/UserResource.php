@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'full_name' => $this->full_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
-            'role' => $this->roles[0]['name']
+            'role' => isset($this->roles[0]['name']) ? $this->roles[0]['name'] : null
         ];
     }
 }

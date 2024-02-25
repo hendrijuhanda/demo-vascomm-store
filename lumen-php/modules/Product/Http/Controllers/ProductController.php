@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
+use Modules\Product\Http\Resources\ProductResource;
 use Modules\Product\Services\Contracts\ProductServiceInterface;
 
 class ProductController extends Controller
@@ -40,7 +41,7 @@ class ProductController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->jsonResponse($this->productService->index(), Response::HTTP_OK);
+        return $this->jsonResponse([$this->productService->index(), ProductResource::class], Response::HTTP_OK);
     }
 
     /**
@@ -60,7 +61,7 @@ class ProductController extends Controller
 
         $input = array_merge($request->all(), ['image' => $imagePath]);
 
-        return $this->jsonResponse($this->productService->create($input), Response::HTTP_OK);
+        return $this->jsonResponse([$this->productService->create($input), ProductResource::class], Response::HTTP_OK);
     }
 
     /**
@@ -70,7 +71,7 @@ class ProductController extends Controller
      */
     public function show($id): JsonResponse
     {
-        return $this->jsonResponse($this->productService->show($id), Response::HTTP_OK);
+        return $this->jsonResponse([$this->productService->show($id), ProductResource::class], Response::HTTP_OK);
     }
 
     /**
@@ -96,7 +97,7 @@ class ProductController extends Controller
             $input = array_merge($request->all(), ['image' => $imagePath]);
         }
 
-        return $this->jsonResponse($this->productService->update($input, $id), Response::HTTP_OK);
+        return $this->jsonResponse([$this->productService->update($input, $id), ProductResource::class], Response::HTTP_OK);
     }
 
     /**

@@ -8,7 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use Modules\User\Entities\User;
+use Modules\User\Entities\Contracts\UserInterface;
+use Modules\User\Http\Resources\UserResource;
 use Modules\User\Services\Contracts\UserServiceInterface;
 use Spatie\Permission\Models\Role;
 
@@ -39,7 +40,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->jsonResponse($this->userService->index(), Response::HTTP_OK);
+        return $this->jsonResponse([$this->userService->index(), UserResource::class], Response::HTTP_OK);
     }
 
     /**
@@ -51,23 +52,16 @@ class UserController extends Controller
     {
         Validator::make($request->all(), [
             'full_name' => 'required|string',
-            'email' => 'required|email|unique:' . User::TABLE . ',email',
-            'password' => 'required|min:6',
-            'phone_number' => 'required|string',
-            'is_active' => 'required|boolean',
+            'email' => 'required|email|unique:' . UserInterface::TABLE . ',email',
+            'phone_number' => 'required|string|unique:' . UserInterface::TABLE . ',phone_number',
             'role' => ['string', fn (...$args) => $this->checkIsRoleExist(...$args)]
         ])->validate();
 
-        $encryptedPassword = app('hash')->make($request->input('password'));
+        $user = $this->userService->register($request->all());
 
-        $user = $this->userService->create(array_merge(
-            $request->all(),
-            ['password' => $encryptedPassword]
-        ));
 
-        $token = $user->createToken('api-token')->accessToken;
 
-        return $this->jsonResponse(['token' => $token], Response::HTTP_OK);
+        return $this->jsonResponse([$user, UserResource::class], Response::HTTP_OK);
     }
 
     /**
@@ -77,10 +71,8 @@ class UserController extends Controller
      */
     public function show($id): JsonResponse
     {
-        return $this->jsonResponse($this->userService->show($id), Response::HTTP_OK);
+        return $this->jsonResponse([$this->userService->show($id), UserResource::class], Response::HTTP_OK);
     }
-
-
 
     /**
      * Update the specified resource in storage.
@@ -92,13 +84,13 @@ class UserController extends Controller
     {
         Validator::make($request->all(), [
             'full_name' => 'string',
-            'email' => 'email|unique:' . User::TABLE . ',email,' . $id,
+            'email' => 'email|unique:' . UserInterface::TABLE . ',email,' . $id,
             'phone_number' => 'string',
             'is_active' => 'boolean',
             'role' => ['string', fn (...$args) => $this->checkIsRoleExist(...$args)]
         ])->validate();
 
-        return $this->jsonResponse($this->userService->update($request->all(), $id), Response::HTTP_OK);
+        return $this->jsonResponse([$this->userService->update($request->all(), $id), UserResource::class], Response::HTTP_OK);
     }
 
     /**
