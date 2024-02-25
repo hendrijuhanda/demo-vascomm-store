@@ -3,6 +3,7 @@
 namespace Modules\Product\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,6 +13,14 @@ use Modules\Product\Repositories\Contracts\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+    /**
+     * @inheritdoc
+     */
+    public function model(): Model
+    {
+        return new Product;
+    }
+
     /**
      * @inheritdoc
      */

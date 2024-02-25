@@ -1,5 +1,6 @@
 {
     "User": true,
     "Product": true,
-    "Auth": true
+    "Auth": true,
+    "Client": true
 }

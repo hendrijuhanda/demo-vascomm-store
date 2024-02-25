@@ -3,11 +3,17 @@
 namespace Modules\Product\Repositories\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Product\Entities\Contracts\ProductInterface;
 
 interface ProductRepositoryInterface
 {
+    /**
+     *
+     */
+    public function model(): Model;
+
     /**
      *
      */
