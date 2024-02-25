@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 14px;
+}
+
+body {
+  @apply text-gray-600;
+}
+
+.slick-slide,
+.slick-slide * {
+  outline: none !important;
+}

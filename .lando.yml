@@ -1,0 +1,47 @@
+name: demo-vascomm-store
+services:
+  node:
+    type: node:18
+    build:
+      - npm i -g pm2
+    run:
+      - cd next-nodejs && cp .env.example .env && npm install && npm run build && pm2 start npm --name "next-js" -- start
+    ports:
+      - "3000:3000"
+  php:
+    type: php:8.0
+    via: apache
+    webroot: lumen-php/public
+    run:
+      - cd lumen-php && cp .env.example .env && composer install && composer dump-autoload && php artisan migrate --seed && php artisan passport:install --force
+  database:
+    type: mysql
+  pma:
+    type: phpmyadmin
+  mailhog:
+    type: mailhog
+  swagger:
+    type: nginx
+    webroot: swagger
+tooling:
+  php:
+    service: php
+  composer:
+    service: php
+  npm:
+    service: node
+  npx:
+    service: node
+  pm2:
+    service: node
+proxy:
+  node:
+    - demo-vascomm-store.lndo.site:3000
+  php:
+    - api.demo-vascomm-store.lndo.site
+  pma:
+    - pma.demo-vascomm-store.lndo.site
+  mailhog:
+    - mailhog.demo-vascomm-store.lndo.site
+  swagger:
+    - swagger.demo-vascomm-store.lndo.site
