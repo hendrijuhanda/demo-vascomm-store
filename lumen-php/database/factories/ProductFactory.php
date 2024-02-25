@@ -24,8 +24,8 @@ class ProductFactory extends Factory
         return [
             'name' => $this->faker->text(25),
             'price' => $this->faker->randomFloat(2, 10000, 5000000),
-            'image' => $this->faker->url(),
-            'is_active' => $this->faker->boolean()
+            'image' => $this->faker->randomElement(['/product-1.png', 'product-2.png']),
+            'is_active' => $this->faker->boolean(75)
         ];
     }
 }

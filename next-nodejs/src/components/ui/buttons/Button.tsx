@@ -3,6 +3,7 @@ export interface ButtonProps {
   color?: "primary" | "primary-inverse";
   link?: string;
   className?: string;
+  onClick?: () => void;
 }
 
 export const Button = (props: ButtonProps) => {
@@ -12,7 +13,8 @@ export const Button = (props: ButtonProps) => {
 
   switch (color) {
     case "primary":
-      colorClassName = "bg-primary-500 text-white hover:bg-primary-600 border border-primary-500";
+      colorClassName =
+        "bg-primary-500 text-white hover:bg-primary-600 border border-primary-500";
       break;
     case "primary-inverse":
       colorClassName =
@@ -27,7 +29,11 @@ export const Button = (props: ButtonProps) => {
       {props.label}
     </a>
   ) : (
-    <button type="button" className={`${baseClassName} ${colorClassName}`}>
+    <button
+      type="button"
+      className={`${baseClassName} ${colorClassName}`}
+      onClick={props.onClick}
+    >
       {props.label}
     </button>
   );

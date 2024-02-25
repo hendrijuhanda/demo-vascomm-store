@@ -72,8 +72,8 @@ export const LatestProducts = () => {
               }}
               {...settings}
             >
-              {items.map((item) => (
-                <div className="px-2 pb-8">
+              {items.map((item, n) => (
+                <div className="px-2 pb-8" key={n}>
                   <Product
                     imageUrl={item.image_url}
                     name={item.name}
