@@ -1,6 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/buttons";
 import { Input } from "@/components/ui/inputs";
+import { useAuth } from "@/stores/auth";
+import { deleteCookie, getCookie } from "cookies-next";
 import Image from "next/image";
+import { useCallback } from "react";
 import { IoSearch } from "react-icons/io5";
 
 export const Logo = () => {
@@ -31,15 +36,70 @@ const SearchInput = () => {
 };
 
 const Buttons = () => {
+  const user = useAuth((state: any) => state.user);
+  const logUserOut = useAuth((state: any) => state.logUserOut);
+
+  const logout = useCallback(() => {
+    const token = getCookie("token");
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((body) => {
+        if (body.code === 200) {
+          logUserOut(body.data);
+        }
+
+        deleteCookie("token");
+
+        window.location.href = "/";
+      })
+      .catch((e) => {
+        deleteCookie("token");
+
+        window.location.href = "/";
+      });
+  }, []);
+
   return (
     <div className="flex items-center justify-end">
-      <div className="mr-2 w-[84px]">
-        <Button label="MASUK" color="primary-inverse" className="!w-full" />
-      </div>
+      {user ? (
+        <>
+          <div className="mr-2">
+            Hi, {user.full_name}
+            <br />
+            Your role is <strong>{user.role}</strong>
+          </div>
 
-      <div className="mr-2 w-[84px]">
-        <Button label="DAFTAR" className="!w-full" />
-      </div>
+          <div className="mr-2 w-[84px]">
+            <Button label="LOGOUT" className="!w-full" onClick={logout} />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mr-2 w-[84px]">
+            <Button
+              label="MASUK"
+              color="primary-inverse"
+              className="!w-full"
+              link="/login"
+            />
+          </div>
+
+          <div className="mr-2 w-[84px]">
+            <Button
+              label="DAFTAR"
+              className="!w-full"
+              link="/login?register=true"
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

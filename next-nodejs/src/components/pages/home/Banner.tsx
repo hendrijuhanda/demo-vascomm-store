@@ -43,8 +43,8 @@ export const Banner = () => {
             }}
             {...settings}
           >
-            {Array.from(Array(5).keys()).map(() => (
-              <div>
+            {Array.from(Array(5).keys()).map((n) => (
+              <div key={n}>
                 <Image
                   src="/banner.png"
                   width={2012}
@@ -67,7 +67,7 @@ export const Banner = () => {
           </div>
 
           {Array.from(Array(5).keys()).map((n) => (
-            <div className="mx-2">
+            <div className="mx-2" key={n}>
               <div
                 className={`w-2 h-2 rounded-full bg-gray-300 transition-colors ${
                   currentSlide === n && "!bg-stone-400"

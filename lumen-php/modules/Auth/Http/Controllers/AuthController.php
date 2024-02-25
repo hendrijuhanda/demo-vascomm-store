@@ -34,10 +34,7 @@ class AuthController extends UserController
         $token = $user->createToken('api-token')->accessToken;
 
         return $this->jsonResponse(
-            array_merge(
-                (new UserResource($user))->toArray(null),
-                ['token' => $token]
-            ),
+            [$user, UserResource::class, ['token' => $token]],
             Response::HTTP_OK
         );
     }

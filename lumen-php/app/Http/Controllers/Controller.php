@@ -51,10 +51,16 @@ class Controller extends BaseController
             $collection = $data[0];
             $class = $data[1];
 
+            $result = (new $class($collection))->toArray(null);
+
+            if (isset($data[2]) && is_array($data[2])) {
+                $result = array_merge($result, $data[2]);
+            }
+
             return response()->json([
                 'code' => $status,
                 'message' => $message,
-                'data' => new $class($collection)
+                'data' => $result
             ], $status);
         }
 

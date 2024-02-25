@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export interface ButtonProps {
   label?: string;
   color?: "primary" | "primary-inverse";
@@ -25,9 +27,9 @@ export const Button = (props: ButtonProps) => {
   const baseClassName = `text-center inline-block px-4 py-2 tracking-wide transitions-colors ${props.className}`;
 
   return props.link ? (
-    <a href={props.link} className={`${baseClassName} ${colorClassName}`}>
+    <Link href={props.link} className={`${baseClassName} ${colorClassName}`}>
       {props.label}
-    </a>
+    </Link>
   ) : (
     <button
       type="button"
